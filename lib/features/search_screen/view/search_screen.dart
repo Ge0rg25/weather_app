@@ -36,16 +36,12 @@ class _SearchSreenState extends State<SearchScreen> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: TextFormField(
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                  hintText: "Moscow",
-                  labelText: "Weather place"),
-              controller: textFieldController,
-              onChanged: (value) {
-                debugPrint(textFieldController.text);
-              },
-            ),
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    hintText: "Moscow",
+                    labelText: "Weather place"),
+                controller: textFieldController),
           ),
           const Padding(padding: EdgeInsets.all(10)),
           Container(
