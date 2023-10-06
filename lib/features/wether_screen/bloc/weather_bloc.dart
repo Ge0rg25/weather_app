@@ -21,8 +21,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     }
 
     try {
-      final weather = await weatherRepository.getWeather("Izhevsk");
-      debugPrint(weather.current.condition.text);
+      final weather = await weatherRepository.getWeather(event.place);
       emit(WeatherLoadedState(weatherData: weather));
     } catch (er) {
       debugPrint(er.toString());

@@ -4,12 +4,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:weather_app/fetures/wether_screen/bloc/weather_bloc.dart';
+import 'package:weather_app/features/wether_screen/bloc/weather_bloc.dart';
 import 'package:weather_app/repositories/weather/abstract_weather_repository.dart';
 
 @RoutePage()
 class WeatherScreen extends StatefulWidget {
-  const WeatherScreen({super.key});
+  const WeatherScreen({super.key, required this.place});
+  final String place;
 
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
@@ -20,7 +21,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
   @override
   void initState() {
-    _bloc.add(LoadWeatherEvent());
+    _bloc.add(LoadWeatherEvent(place: widget.place));
     super.initState();
   }
 
@@ -32,7 +33,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
         body: RefreshIndicator(
           onRefresh: () async {
             Completer completer = Completer();
-            _bloc.add(LoadWeatherEvent(completer: completer));
+            _bloc.add(
+                LoadWeatherEvent(completer: completer, place: widget.place));
             return completer.future;
           },
           child: BlocBuilder<WeatherBloc, WeatherState>(
@@ -72,8 +74,22 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ],
                 );
               } else if (state is WeatherLoadingFilatureState) {
-                return const Center(
-                    child: Text("something went wrong! try againg later"));
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Something went wrong!\nTry againg later",
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.titleSmall,
+                      ),
+                      TextButton(
+                          onPressed: () =>
+                              _bloc.add(LoadWeatherEvent(place: widget.place)),
+                          child: const Text("Try again"))
+                    ],
+                  ),
+                );
               }
               return const Center(child: CircularProgressIndicator());
             },

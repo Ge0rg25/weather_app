@@ -5,6 +5,6 @@ sealed class WeatherEvent {}
 
 class LoadWeatherEvent extends WeatherEvent {
   final Completer? completer;
-
-  LoadWeatherEvent({this.completer});
+  final String place;
+  LoadWeatherEvent({this.completer, required this.place});
 }
